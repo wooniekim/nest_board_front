@@ -12,7 +12,7 @@ function App() {
       <Route path="/" element={<Main />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/viewpost" element={<ViewPost />} />
+      <Route path="/viewpost/:id" element={<ViewPost />} />
     </Routes>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Post } from "../dto/Post";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   const [postList, setPostList] = useState<Array<any>>([]);
@@ -100,7 +101,9 @@ const Main = () => {
                         <tr>
                           <td className="py-5 border-b border-gray-200 bg-white">
                             <div className="flex items-center justify-center">
-                              <p className="text-gray-900">{post?.title}</p>
+                              <Link to={`/viewpost/${post.id}`}>
+                                {post.title}
+                              </Link>
                             </div>
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white ">
