@@ -11,9 +11,6 @@ const Main = () => {
 
   const getPostList = async () => {
     const url = `https://dummyjson.com/posts`;
-    const headers = {
-      "Content-Type": "application/json",
-    };
     try {
       const res = await axios.get(url);
       setPostList(res.data?.posts);
@@ -25,8 +22,41 @@ const Main = () => {
     }
   };
 
+  const size = 7;
+  const totalPage = Math.ceil(postList.length / size);
+  const pageCount = 5;
+  const [curPage, setCurPage] = useState(1);
+  const [pageGroup, setPageGroup] = useState(Math.ceil(curPage / pageCount));
+  const offset = (curPage - 1) * size;
+  let lastNum = pageGroup * pageCount;
+  if (lastNum > totalPage) {
+    lastNum = totalPage;
+  }
+  let firstNum = lastNum - (pageCount - 1);
+  if (pageCount > lastNum) {
+    firstNum = 1;
+  }
+
+  const pagination = () => {
+    let arr = [];
+    for (let i = firstNum; i <= lastNum; i++) {
+      arr.push(
+        <li>
+          <button
+            key={i}
+            onClick={() => setCurPage(i)}
+            className="font-bold flex items-center justify-center text-sm py-2 px-3 leading-tight hover:underline"
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return arr;
+  };
+
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full position: fixed">
       <div className="min-h-screen bg-red-200 flex justify-center items-center p-12">
         <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block"></div>
         <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block"></div>
@@ -64,7 +94,7 @@ const Main = () => {
                       </th>
                     </tr>
                   </thead>
-                  {postList.map((post) => {
+                  {postList.slice(offset, offset + size).map((post) => {
                     return (
                       <tbody>
                         <tr>
@@ -100,14 +130,52 @@ const Main = () => {
                   })}
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                  <div className="inline-flex mt-2 xs:mt-0">
-                    <button className="text-sm text-indigo-50 transition duration-150 hover:bg-purple-300 bg-purple-600 font-semibold py-2 px-4 rounded-l">
-                      Prev
-                    </button>
-                    &nbsp; &nbsp;
-                    <button className="text-sm text-indigo-50 transition duration-150 hover:bg-purple-300 bg-purple-600 font-semibold py-2 px-4 rounded-r">
-                      Next
-                    </button>
+                  <div className="w-full flex justify-center mt-4">
+                    <ul className="inline-flex items-stretch -space-x-px">
+                      <li>
+                        <button
+                          className="flex items-center justify-center h-full py-1.5 px-3 ml-0 rounded-l-lg"
+                          onClick={() => setPageGroup(pageGroup - 1)}
+                          disabled={firstNum === 1}
+                        >
+                          <span className="sr-only">Previous</span>
+                          <svg
+                            className="w-5 h-5"
+                            aria-hidden="true"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </li>
+                      {pagination()}
+                      <li>
+                        <button
+                          className="flex items-center justify-center h-full py-1.5 px-3 leading-tight rounded-r-lg"
+                          onClick={() => setPageGroup(pageGroup + 1)}
+                          disabled={lastNum === totalPage}
+                        >
+                          <span className="sr-only">Next</span>
+                          <svg
+                            className="w-5 h-5"
+                            aria-hidden="true"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
