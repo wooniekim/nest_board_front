@@ -33,16 +33,16 @@ const Login = () => {
               </p>
             </div>
             <div className="space-y-4">
-              <div>
-                <label className="text-sm font-semibold">이메일</label>
+              <div className="my-2">
+                <label className="text-sm font-semibold mx-1">이메일</label>
                 <input
                   type="text"
                   placeholder="이메일"
                   className="block text-sm p-3 rounded-lg w-full border outline-none"
                 />
               </div>
-              <div>
-                <label className="text-sm font-semibold">비밀번호</label>
+              <div className="my-2">
+                <label className="text-sm font-semibold mx-1">비밀번호</label>
                 <div
                   className="flex items-center justify-between rounded-md p-3 border"
                   x-data="{ show: true }"
