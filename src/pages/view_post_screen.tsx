@@ -54,16 +54,16 @@ const ViewPost = () => {
                 </div>
                 <div className="grid place-items-end w-full mx-10 my-8">
                   <div className="flex flex-wrap">
-                    <div className="mx-2 hover:animate-bounce">
+                    <div className="mx-2 mt-1 hover:animate-bounce">
                       <Link
                         to={"/updatepost"}
-                        className="font-black rounded items-center text-green-500"
+                        className="text-white bg-green-500 font-medium py-2 px-4 rounded-lg tracking-wide mr-1 hover:bg-green-400"
                       >
                         <span>수정</span>
                       </Link>
                     </div>
                     <div className="mx-2">
-                      <button className="font-black rounded items-center text-red-500 hover:animate-bounce">
+                      <button className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400">
                         <span className="">삭제</span>
                       </button>
                     </div>
