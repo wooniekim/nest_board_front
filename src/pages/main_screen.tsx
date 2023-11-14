@@ -69,9 +69,12 @@ const Main = () => {
             </div>
             <div className="flex items-center justify-between">
               <div className="lg:ml-40 ml-10 space-x-8">
-                <button className="bg-purple-600 hover:bg-purple-400 px-4 py-2 rounded-md text-white font-bold tracking-wide cursor-pointer">
+                <Link
+                  to="/writepost"
+                  className="bg-purple-600 hover:bg-purple-400 px-4 py-2 rounded-md text-white font-bold tracking-wide cursor-pointer"
+                >
                   글 쓰기
-                </button>
+                </Link>
               </div>
             </div>
           </div>
