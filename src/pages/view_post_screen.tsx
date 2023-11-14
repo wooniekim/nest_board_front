@@ -48,7 +48,7 @@ const ViewPost = () => {
                       >
                         <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
                       </svg>
-                      북딱 메인으로 돌아가기
+                      목록으로 돌아가기
                     </Link>
                   </div>
                 </div>
@@ -127,6 +127,72 @@ const ViewPost = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <hr className="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-300 to-transparent opacity-25 dark:opacity-100" />
+            <h1 className="text-2xl mb-4 grid place-items-center font-bold">
+              댓글
+            </h1>
+            <div className="grid place-items-center">
+              <div className="w-3/4 rounded-lg p-4">
+                {/* 댓글 쓰기 */}
+                <div className="flex mx-auto items-center justify-center shadow-lg mb-4 max-w-lg">
+                  <div className="w-full max-w-xl border bg-white rounded-lg px-4 pt-2">
+                    <div className=" flex flex-wrap -mx-3 mb-6">
+                      <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg font-bold">
+                        댓글 작성
+                      </h2>
+                      <div className="w-full md:w-full px-3 mb-2 mt-2">
+                        <textarea
+                          className="bg-gray-100 rounded border leading-normal resize-none w-full h-20 py-2 px-3 focus:outline-none"
+                          name="body"
+                          placeholder="댓글을 작성해 주세요"
+                          required
+                        ></textarea>
+                      </div>
+                      <div className="w-full md:w-full flex items-end px-3">
+                        <div className="-mr-1">
+                          <input
+                            type="submit"
+                            className="bg-purple-400 text-white py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-purple-300 font-bold"
+                            value="작성"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* 댓글 */}
+                <div className="flex bg-white mx-4 md:mx-auto mt-6 max-w-md md:max-w-2xl border-y-2">
+                  <div className="flex items-start px-4 py-6 w-full">
+                    <div className="w-full">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-bold text-gray-900">
+                          운지한덩~
+                        </h2>
+                        <small className="text-sm text-gray-700">
+                          2000.05.23
+                        </small>
+                      </div>
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="grid place-items-start">
+                          <p className="mt-3 text-gray-700 text-sm">김운지</p>
+                        </div>
+                        <div className="grid place-items-end">
+                          <div className="text-gray-700 text-sm ml-3">
+                            <button className="text-white bg-green-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-green-400">
+                              수정
+                            </button>
+                            <button className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400">
+                              삭제
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr className="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-300 to-transparent opacity-25 dark:opacity-100" />
               </div>
             </div>
           </div>

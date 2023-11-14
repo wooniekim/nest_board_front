@@ -65,7 +65,7 @@ const Main = () => {
           <div className=" flex items-center justify-between pb-3">
             <div>
               <h2 className="text-gray-600 font-bold text-3xl">영진갤러리</h2>
-              <span className="text-xs">당신의 필력을 펼쳐보세요!!</span>
+              <span className="text-base my-2">당신의 필력을 펼쳐보세요!!</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="lg:ml-40 ml-10 space-x-8">
