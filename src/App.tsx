@@ -6,6 +6,7 @@ import Login from "./pages/login_screen";
 import Register from "./pages/register_screen";
 import ViewPost from "./pages/view_post_screen";
 import WritePost from "./pages/write_post";
+import UpdatePost from "./pages/update_post";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/viewpost/:id" element={<ViewPost />} />
       <Route path="/writepost" element={<WritePost />} />
+      <Route path="/updatepost" element={<UpdatePost />} />
     </Routes>
   );
 }

@@ -23,7 +23,7 @@ const Main = () => {
     }
   };
 
-  const size = 7;
+  const size = 5;
   const totalPage = Math.ceil(postList.length / size);
   const pageCount = 5;
   const [curPage, setCurPage] = useState(1);
@@ -59,8 +59,8 @@ const Main = () => {
   return (
     <div className="h-full w-full position: fixed">
       <div className="min-h-screen bg-red-200 flex justify-center items-center p-12">
-        <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block"></div>
-        <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block"></div>
+        <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block animate-bounce"></div>
+        <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block animate-bounce"></div>
         <div className="w-full p-8 bg-white rounded-2xl shadow-xl z-20">
           <div className=" flex items-center justify-between pb-3">
             <div>
@@ -94,7 +94,7 @@ const Main = () => {
                         작성일
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 font-bold text-gray-600 tracking-wider">
-                        민주화
+                        개념/비추
                       </th>
                     </tr>
                   </thead>
@@ -121,13 +121,7 @@ const Main = () => {
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <div className="flex items-center justify-center">
-                              <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                <span
-                                  aria-hidden
-                                  className="absolute inset-0 bg-green-300 opacity-50 rounded-full"
-                                ></span>
-                                <span className="relative">민주화</span>
-                              </span>
+                              <p>1 / 2</p>
                             </div>
                           </td>
                         </tr>
@@ -188,8 +182,8 @@ const Main = () => {
             </div>
           </div>
         </div>
-        <div className="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block"></div>
-        <div className="w-20 h-40 absolute bg-purple-300 rounded-full bottom-20 left-10 transform rotate-45 hidden md:block"></div>
+        <div className="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block animate-bounce"></div>
+        <div className="w-20 h-40 absolute bg-purple-300 rounded-full bottom-20 left-10 transform rotate-45 hidden md:block animate-bounce"></div>
       </div>
     </div>
   );

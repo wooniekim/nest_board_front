@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const WritePost = () => {
+const UpdatePost = () => {
   const [PasswordHide, setPasswordHide] = useState(false);
 
   return (
@@ -9,7 +9,7 @@ const WritePost = () => {
         <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block animate-bounce"></div>
         <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block animate-bounce"></div>
         <div className="rounded-xl border p-5 shadow-md w-5/6 bg-white z-20">
-          <h1 className="text-center text-3xl font-bold mb-4">글 작성</h1>
+          <h1 className="text-center text-3xl font-bold mb-4">글 수정</h1>
           <div className="space-y-2">
             <div>
               <div>
@@ -67,7 +67,7 @@ const WritePost = () => {
               ) : null}
             </div>
             <button className="px-6 py-2 mx-auto block rounded-md text-lg font-bold text-white bg-purple-400 hover:bg-red-200">
-              작성완료!
+              수정완료!
             </button>
           </div>
         </div>
@@ -77,4 +77,4 @@ const WritePost = () => {
     </div>
   );
 };
-export default WritePost;
+export default UpdatePost;

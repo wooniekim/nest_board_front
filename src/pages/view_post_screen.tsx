@@ -33,21 +33,42 @@ const ViewPost = () => {
           <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block animate-bounce"></div>
           <div className="w-5/6 h-5/6 my-10 bg-white rounded-2xl shadow-xl z-20">
             <div className="items-center justify-center grid place-items-center">
-              <div className="grid place-items-left w-full my-8 ml-20">
-                <Link
-                  className="font-bold flex flex-wrap hover:underline"
-                  to={"/"}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
-                    viewBox="0 0 448 512"
-                    className="mt-1 mr-2"
-                  >
-                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-                  </svg>
-                  북딱 메인으로 돌아가기
-                </Link>
+              <div className="flex flex-nowrap w-full">
+                <div className="grid place-items-start w-full my-8 ml-20">
+                  <div className="flex flex-wrap">
+                    <Link
+                      className="font-bold flex flex-wrap hover:underline"
+                      to={"/"}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="1em"
+                        viewBox="0 0 448 512"
+                        className="mt-1 mr-2"
+                      >
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                      </svg>
+                      북딱 메인으로 돌아가기
+                    </Link>
+                  </div>
+                </div>
+                <div className="grid place-items-end w-full mx-10 my-8">
+                  <div className="flex flex-wrap">
+                    <div className="mx-2 hover:animate-bounce">
+                      <Link
+                        to={"/updatepost"}
+                        className="font-black rounded items-center text-green-500"
+                      >
+                        <span>수정</span>
+                      </Link>
+                    </div>
+                    <div className="mx-2">
+                      <button className="font-black rounded items-center text-red-500 hover:animate-bounce">
+                        <span className="">삭제</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="rounded-xl border p-5 shadow-md w-9/12 bg-white mb-10">
                 <div className="flex w-full items-center justify-between border-b pb-3">
