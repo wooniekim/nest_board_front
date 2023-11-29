@@ -13,7 +13,7 @@ const WritePost = () => {
           <div className="space-y-2">
             <div>
               <div>
-                <label className="text-sm font-semibold mx-1">제목</label>
+                <label className="font-semibold mx-1">제목</label>
                 <input
                   type="text"
                   id="first_name"
@@ -24,7 +24,7 @@ const WritePost = () => {
               </div>
             </div>
             <div>
-              <label className="text-sm font-semibold mx-1">내용</label>
+              <label className="font-semibold mx-1">내용</label>
               <textarea
                 id="first_name"
                 className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 h-56"
@@ -33,7 +33,7 @@ const WritePost = () => {
               ></textarea>
             </div>
             <div>
-              <label className="text-sm font-semibold mx-1">파일</label>
+              <label className="font-semibold mx-1 my-2">파일</label>
               <input
                 type="file"
                 id="file"
@@ -42,9 +42,7 @@ const WritePost = () => {
             </div>
             <div className="flex w-full flex-col">
               <div className="flex flex-row">
-                <label className="text-sm font-semibold mb-2 mx-2">
-                  비밀글 여부
-                </label>
+                <label className="font-semibold mb-2 mx-2">비밀글 여부</label>
                 <input
                   className="block text-lg mb-2"
                   type="checkbox"
@@ -54,9 +52,7 @@ const WritePost = () => {
               <div className="divider divider-horizontal"></div>
               {PasswordHide ? (
                 <div className="flex flex-row">
-                  <label className="text-sm font-semibold mx-2 mt-2">
-                    비밀번호
-                  </label>
+                  <label className="font-semibold mx-2 mt-2">비밀번호</label>
                   <input
                     type="password"
                     placeholder="비밀번호"
