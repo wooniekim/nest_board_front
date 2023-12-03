@@ -113,7 +113,7 @@ const Register = () => {
               <div>
                 <label className="text-sm font-semibold mx-1">이메일</label>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="이메일"
                   className="block text-sm p-3 rounded-lg w-full border outline-none"
                   onChange={(event) =>
