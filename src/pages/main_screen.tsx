@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { Post } from "../dto/Post";
 import { Link } from "react-router-dom";
 
 const Main = () => {
@@ -71,7 +70,7 @@ const Main = () => {
               <div className="lg:ml-40 ml-10 space-x-8">
                 <Link
                   to="/writepost"
-                  className="bg-purple-600 hover:bg-purple-400 px-4 py-2 rounded-md text-white font-bold tracking-wide cursor-pointer text-2xl"
+                  className="bg-purple-300 hover:bg-purple-200 px-4 py-2 rounded-md text-purple-700 font-bold tracking-wide cursor-pointer text-2xl"
                 >
                   글 쓰기
                 </Link>

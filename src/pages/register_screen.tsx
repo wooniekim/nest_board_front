@@ -1,6 +1,39 @@
+import axios, { AxiosError } from "axios";
 import React, { useState, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    passwordCheck: "",
+    nickname: "",
+    tel: "",
+  });
+  const [isSame, setIsSame] = useState(false);
+
+  // url
+  const url = `http://localhost:3000/user/register`;
+
+  // request body
+  const body = {
+    email: form.email,
+    password: form.password,
+    nickname: form.nickname,
+    tel: form.tel,
+  };
+  // 비밀번호, 비밀번호 확인 일치 여부
+  const confirmingPassword = () => {
+    if (form.password === form.passwordCheck) {
+      setIsSame(true);
+      console.log("같다");
+    }
+  };
+
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -27,13 +60,47 @@ const Register = () => {
     });
     console.log(confirmPasswordType.type, confirmPasswordType.visible);
   };
+
+  const submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    const headers = { "Content-Type": "application/json" };
+    try {
+      // 데이터 전송
+      const res = await axios.post(url, body, { headers });
+      console.log(res);
+      if (res.status === 201) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "회원가입이 완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full h-full position: fixed">
         <div className="min-h-screen bg-red-200 flex justify-center items-center">
           <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block animate-bounce"></div>
           <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block animate-bounce"></div>
-          <div className="p-8 bg-white rounded-2xl shadow-xl z-20">
+          <form
+            className="p-8 bg-white rounded-2xl shadow-xl z-20"
+            onSubmit={submit}
+          >
             <div>
               <h1 className="text-3xl font-bold text-center mb-4 cursor-pointer">
                 회원가입
@@ -49,6 +116,10 @@ const Register = () => {
                   type="text"
                   placeholder="이메일"
                   className="block text-sm p-3 rounded-lg w-full border outline-none"
+                  onChange={(event) =>
+                    setForm({ ...form, email: event.target.value })
+                  }
+                  required
                 />
               </div>
               <div className="my-2">
@@ -59,6 +130,10 @@ const Register = () => {
                     type={passwordType.type}
                     id="password"
                     className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
+                    onChange={(event) =>
+                      setForm({ ...form, password: event.target.value })
+                    }
+                    required
                   />
                   {passwordType.visible ? (
                     <button className="block" onClick={handlePasswordType}>
@@ -84,7 +159,7 @@ const Register = () => {
                 </div>
               </div>
             </div>
-            <div className="my-2">
+            <div className="mt-2 mb-1">
               <label className="text-sm font-semibold mx-1">
                 비밀번호 확인
               </label>
@@ -94,6 +169,11 @@ const Register = () => {
                   type={confirmPasswordType.type}
                   id="password"
                   className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
+                  onChange={(event) =>
+                    setForm({ ...form, passwordCheck: event.target.value })
+                  }
+                  onBlur={confirmingPassword}
+                  required
                 />
                 {confirmPasswordType.visible ? (
                   <button className="block" onClick={handleConfirmPasswordType}>
@@ -119,27 +199,57 @@ const Register = () => {
               </div>
             </div>
             <div>
+              {isSame ? (
+                <div className="mb-3 mx-1">
+                  <label className="text-sm font-semibold text-green-400">
+                    비밀번호가 일치합니다.
+                  </label>
+                </div>
+              ) : (
+                <div className="mb-3 mx-1">
+                  <label className="text-sm font-semibold text-red-400">
+                    비밀번호가 일치하지 않습니다.
+                  </label>
+                </div>
+              )}
               <label className="text-sm font-semibold mx-1">닉네임</label>
               <input
                 type="text"
                 placeholder="닉네임"
                 className="block text-sm p-3 rounded-lg w-full border outline-none"
+                onChange={(event) =>
+                  setForm({ ...form, nickname: event.target.value })
+                }
+                required
               />
             </div>
             <div className="my-2">
               <label className="text-sm font-semibold mx-1">전화번호</label>
               <input
                 type="text"
-                placeholder="전화번호"
+                placeholder="-빼고 입력해주세요"
                 className="block text-sm p-3 rounded-lg w-full border outline-none"
+                onChange={(event) =>
+                  setForm({ ...form, tel: event.target.value })
+                }
+                required
               />
             </div>
             <div className="text-center mt-6">
-              <button className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl font-bold">
-                회원가입
-              </button>
+              {isSame ? (
+                <button
+                  type="submit"
+                  className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl font-bold"
+                >
+                  회원가입
+                </button>
+              ) : (
+                <button className="py-3 w-64 text-xl text-white bg-gray-400 rounded-2xl font-bold">
+                  회원가입
+                </button>
+              )}
             </div>
-          </div>
+          </form>
         </div>
         <div className="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block animate-bounce"></div>
         <div className="w-20 h-40 absolute bg-purple-300 rounded-full bottom-20 left-10 transform rotate-45 hidden md:block animate-bounce"></div>

@@ -1,11 +1,28 @@
 import React, { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import axios, { AxiosError } from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
   });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  // url
+  const url = `http://localhost:3000/user/login`;
+
+  // request body
+  const body = {
+    email: form.email,
+    password: form.password,
+  };
 
   //password type 변경하는 함수
   const handlePasswordType = (e: SyntheticEvent) => {
@@ -17,13 +34,47 @@ const Login = () => {
     });
     console.log(passwordType.type, passwordType.visible);
   };
+
+  const submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    const headers = { "Content-Type": "application/json" };
+    try {
+      // 데이터 전송
+      const res = await axios.post(url, body, { headers });
+      console.log(res);
+      if (res.status === 201) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "메인페이지로 이동합니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full h-full position: fixed">
         <div className="min-h-screen bg-red-200 flex justify-center items-center">
           <div className="absolute w-60 h-60 rounded-xl bg-yellow-400 -top-5 -left-16 z-0 transform rotate-45 hidden md:block animate-bounce"></div>
           <div className="absolute w-48 h-48 rounded-xl bg-yellow-400 -bottom-6 -right-10 transform rotate-12 hidden md:block animate-bounce"></div>
-          <div className="py-12 px-12 bg-white rounded-2xl shadow-xl z-20">
+          <form
+            className="py-12 px-12 bg-white rounded-2xl shadow-xl z-20"
+            onSubmit={submit}
+          >
             <div>
               <h1 className="text-3xl font-bold text-center mb-4 cursor-pointer">
                 로그인
@@ -36,9 +87,12 @@ const Login = () => {
               <div className="my-2">
                 <label className="text-sm font-semibold mx-1">이메일</label>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="이메일"
                   className="block text-sm p-3 rounded-lg w-full border outline-none"
+                  onChange={(event) =>
+                    setForm({ ...form, email: event.target.value })
+                  }
                 />
               </div>
               <div className="my-2">
@@ -53,6 +107,9 @@ const Login = () => {
                     type={passwordType.type}
                     id="password"
                     className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
+                    onChange={(event) =>
+                      setForm({ ...form, password: event.target.value })
+                    }
                   />
                   {passwordType.visible ? (
                     <button className="block" onClick={handlePasswordType}>
@@ -79,7 +136,10 @@ const Login = () => {
               </div>
             </div>
             <div className="text-center mt-6">
-              <button className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl font-bold">
+              <button
+                type="submit"
+                className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl font-bold"
+              >
                 로그인
               </button>
               <p className="mt-4 text-sm">
@@ -92,7 +152,7 @@ const Login = () => {
                 </Link>
               </p>
             </div>
-          </div>
+          </form>
           <div className="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block animate-bounce"></div>
           <div className="w-20 h-40 absolute bg-purple-300 rounded-full bottom-20 left-10 transform rotate-45 hidden md:block animate-bounce"></div>
         </div>
