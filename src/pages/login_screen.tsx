@@ -2,9 +2,11 @@ import React, { SyntheticEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const [form, setForm] = useState({
     email: "",
@@ -27,15 +29,20 @@ const Login = () => {
       // 데이터 전송
       const res = await axios.post(url, body, { headers });
       console.log(res);
-      if (res.status === 201) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "메인페이지로 이동합니다.",
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        navigate("/");
+      const { access_token } = res.data;
+      // localStorage.setItem("refresh-token", refresh_token);
+      setCookie("access-token", access_token, { maxAge: 15 * 60 });
+      if (access_token != null) {
+        if (res.status === 201) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "메인페이지로 이동합니다.",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          navigate("/");
+        }
       }
     } catch (error) {
       if (error instanceof AxiosError) {
