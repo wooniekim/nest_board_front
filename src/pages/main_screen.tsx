@@ -69,6 +69,12 @@ const Main = () => {
             <div className="flex items-center justify-between">
               <div className="lg:ml-40 ml-10 space-x-8">
                 <Link
+                  to="/game"
+                  className="bg-yellow-400 hover:bg-yellow-300 px-4 py-2 rounded-md text-gray-800 font-bold tracking-wide cursor-pointer text-2xl"
+                >
+                  돈따러가기
+                </Link>
+                <Link
                   to="/writepost"
                   className="bg-purple-300 hover:bg-purple-200 px-4 py-2 rounded-md text-purple-700 font-bold tracking-wide cursor-pointer text-2xl"
                 >
