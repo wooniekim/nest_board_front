@@ -1,10 +1,21 @@
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { SyntheticEvent, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Post } from "../dto/Post";
+import { Comment } from "../dto/Comment";
+import Swal from "sweetalert2";
+import { tokenToString } from "typescript";
 
 const ViewPost = () => {
+  const navigate = useNavigate();
   const [post, setPost] = useState<Post>();
+  const [comment, setComment] = useState("");
+  const [change, setChange] = useState(true);
+  const [commentList, setCommentList] = useState<Array<Comment>>([]);
+
+  useEffect(() => {
+    console.log("낄낄");
+  }, [change]);
 
   let { id } = useParams();
   const postId = id;
@@ -14,10 +25,12 @@ const ViewPost = () => {
   }, []);
 
   const getPost = async () => {
-    const url = `https://dummyjson.com/posts/${postId}`;
+    const url = `http://localhost:3000/post/${postId}`;
     try {
       const res = await axios.get(url);
       setPost(res.data);
+      setCommentList(res.data.comments);
+      console.log(commentList);
       console.log(res.data);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -25,6 +38,155 @@ const ViewPost = () => {
       }
     }
   };
+  const deletePost = async () => {
+    // 글 삭제 url
+    const url_delete = `http://localhost:3000/post/${postId}`;
+    try {
+      const token = localStorage.getItem("access-token");
+      const res = await axios.delete(url_delete, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "삭제가 완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해 주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/");
+      }
+    }
+  };
+  const WriteComment = async (e: SyntheticEvent) => {
+    const WriteCommentUrl = `http://localhost:3000/comment`;
+    const body = {
+      content: comment,
+      parentId: postId,
+    };
+    const token = localStorage.getItem("access-token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const res = await axios.post(WriteCommentUrl, body, { headers });
+      console.log(res);
+      if (res.status === 201) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "댓글 작성이 완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        window.location.replace(`/viewpost/${postId}`);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+      navigate(`/viewpost/${postId}`);
+    }
+  };
+
+  const UpdateComment = async (id: string) => {
+    const WriteCommentUrl = `http://localhost:3000/comment/${id}`;
+    const { value: text } = await Swal.fire({
+      input: "textarea",
+      inputLabel: "Message",
+      inputPlaceholder: "Type your message here...",
+      inputAttributes: {
+        "aria-label": "Type your message here",
+      },
+      showCancelButton: true,
+    });
+    const body = {
+      content: text,
+      commentId: id,
+    };
+    const token = localStorage.getItem("access-token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const res = await axios.put(WriteCommentUrl, body, { headers });
+      console.log(res);
+      if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "댓글 수정이 완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        window.location.replace(`/viewpost/${postId}`);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+      navigate(`/viewpost/${postId}`);
+    }
+  };
+
+  const DeleteComment = async (id: string) => {
+    const WriteCommentUrl = `http://localhost:3000/comment/${id}`;
+    const token = localStorage.getItem("access-token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const res = await axios.delete(WriteCommentUrl, { headers });
+      console.log(res);
+      if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "댓글 삭제가  완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        window.location.replace(`/viewpost/${postId}`);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+      navigate(`/viewpost/${postId}`);
+    }
+  };
+
   return (
     <>
       <div className="min-w-screen min-h-screen">
@@ -34,8 +196,8 @@ const ViewPost = () => {
           <div className="w-5/6 h-5/6 my-10 bg-white rounded-2xl shadow-xl z-20">
             <div className="items-center justify-center grid place-items-center">
               <div className="flex flex-nowrap w-full">
-                <div className="grid place-items-start w-full my-8 ml-20">
-                  <div className="flex flex-wrap">
+                <div className="flex flex-start w-full">
+                  <div className="flex flex-wrap pt-12">
                     <Link
                       className="font-bold flex flex-wrap hover:underline"
                       to={"/"}
@@ -52,25 +214,28 @@ const ViewPost = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="grid place-items-end w-full mx-10 my-8">
+                <div className="flex flex-end w-full p-6 mb-2">
                   <div className="flex flex-wrap">
                     <div className="mx-2 mt-1 hover:animate-bounce">
                       <Link
-                        to={"/updatepost"}
+                        to={`/updatepost/${postId}`}
                         className="text-white bg-green-500 font-medium py-2 px-4 rounded-lg tracking-wide mr-1 hover:bg-green-400"
                       >
                         <span>수정</span>
                       </Link>
                     </div>
                     <div className="mx-2">
-                      <button className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400">
+                      <button
+                        onClick={deletePost}
+                        className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400"
+                      >
                         <span className="">삭제</span>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border p-5 shadow-md w-9/12 bg-white mb-10">
+              <div className="rounded-xl border p-5 shadow-md w-full bg-white mb-10">
                 <div className="flex w-full items-center justify-between border-b pb-3">
                   <div className="flex items-center space-x-3">
                     <div className="text-xl font-bold text-slate-700 font-Line-bd">
@@ -79,19 +244,25 @@ const ViewPost = () => {
                   </div>
                   <div className="flex items-center">
                     <div className=" font-bold mr-1 text-blue-400">개념</div>
-                    <div className=" text-neutral-500 mr-3">1</div>
+                    <div className=" text-neutral-500 mr-3">
+                      {post?.recommand}
+                    </div>
                     <div className=" font-bold mr-1 text-red-400">비추</div>
-                    <div className=" text-neutral-500 mr-3">1</div>
-                    <div className=" font-bold mr-1">조회수</div>
-                    <div className=" text-neutral-500 mr-3">523</div>
-                    <div className=" font-bold mr-3">{post?.userId}</div>
+                    <div className=" text-neutral-500 mr-3">
+                      {post?.unrecommand}
+                    </div>
+                    <div className=" font-bold mr-3">{post?.nickname}</div>
                     <div className=" font-bold mr-1">작성일</div>
-                    <div className=" text-neutral-500">2000.05.23</div>
+                    <div className=" text-neutral-500">
+                      {post?.createdAt.substr(0, 10)}
+                    </div>
                   </div>
                 </div>
                 <div className="mt-4 mb-6 items-center justify-center grid place-items-center">
                   {/* <div className="mb-3 text-xl font-bold">{boardDetail.title}</div> */}
-                  <div className="text-lg text-neutral-600">{post?.body}</div>
+                  <div className="text-lg text-neutral-600">
+                    {post?.content}
+                  </div>
                   <div className="mt-10">
                     <img
                       src="https://i.ibb.co/XxTY0vK/photo-2023-11-13-19-12-47.jpg"
@@ -148,15 +319,17 @@ const ViewPost = () => {
                           name="body"
                           placeholder="댓글을 작성해 주세요"
                           required
+                          onChange={(event) => setComment(event.target.value)}
                         ></textarea>
                       </div>
                       <div className="w-full md:w-full flex items-end px-3">
                         <div className="-mr-1">
-                          <input
-                            type="submit"
+                          <button
+                            onClick={WriteComment}
                             className="bg-purple-400 text-white py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-purple-300 font-bold"
-                            value="작성"
-                          />
+                          >
+                            작성
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -165,31 +338,38 @@ const ViewPost = () => {
                 {/* 댓글 */}
                 <div className="flex bg-white mx-4 md:mx-auto mt-6 max-w-md md:max-w-2xl border-y-2">
                   <div className="flex items-start px-4 py-6 w-full">
-                    <div className="w-full">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-bold text-gray-900">
-                          운지한덩~
-                        </h2>
-                        <small className="text-sm text-gray-700">
-                          2000.05.23
-                        </small>
-                      </div>
-                      <div className="flex items-center justify-between mt-4">
-                        <div className="grid place-items-start">
-                          <p className="mt-3 text-gray-700 text-sm">김운지</p>
-                        </div>
-                        <div className="grid place-items-end">
-                          <div className="text-gray-700 text-sm ml-3">
-                            <button className="text-white bg-green-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-green-400">
-                              수정
-                            </button>
-                            <button className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400">
-                              삭제
-                            </button>
+                    {commentList?.map((comment) => {
+                      return (
+                        <div className="w-full">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-bold text-gray-900">
+                              {comment.content}
+                            </h2>
+                            <small className="text-sm text-gray-700">
+                              {comment.createdAt.substr(0, 10)}
+                            </small>
+                          </div>
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="grid place-items-end">
+                              <div className="text-gray-700 text-sm ml-3">
+                                <button
+                                  onClick={() => UpdateComment(comment.id)}
+                                  className="text-white bg-green-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-green-400"
+                                >
+                                  수정
+                                </button>
+                                <button
+                                  onClick={() => DeleteComment(comment.id)}
+                                  className="text-white bg-red-500 font-medium py-1 px-4 rounded-lg tracking-wide mr-1 hover:bg-red-400"
+                                >
+                                  삭제
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
                 <hr className="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-300 to-transparent opacity-25 dark:opacity-100" />

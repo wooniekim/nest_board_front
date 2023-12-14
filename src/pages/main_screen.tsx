@@ -10,10 +10,16 @@ const Main = () => {
   }, []);
 
   const getPostList = async () => {
-    const url = `https://dummyjson.com/posts`;
+    const url = `http://localhost:3000/post`;
+    const token = localStorage.getItem("access-token");
     try {
-      const res = await axios.get(url);
-      setPostList(res.data?.posts);
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+      setPostList(res.data);
       console.log(res.data);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -63,7 +69,9 @@ const Main = () => {
         <div className="w-full p-8 bg-white rounded-2xl shadow-xl z-20">
           <div className=" flex items-center justify-between pb-3">
             <div>
-              <h2 className="text-gray-600 font-bold text-3xl">영진갤러리</h2>
+              <h2 className="text-gray-600 font-extrabold text-4xl mb-1">
+                영진갤러리
+              </h2>
               <span className="text-base my-2">당신의 필력을 펼쳐보세요!!</span>
             </div>
             <div className="flex items-center justify-between">
@@ -116,17 +124,19 @@ const Main = () => {
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white ">
                             <div className="flex items-center justify-center">
-                              <p className="text-gray-900">{post?.userId}</p>
+                              <p className="text-gray-900">{post?.nickname}</p>
                             </div>
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <div className="flex items-center justify-center">
-                              <p className="text-gray-900">Jan 21, 2020</p>
+                              <p className="text-gray-900">{post?.createdAt}</p>
                             </div>
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <div className="flex items-center justify-center">
-                              <p>1 / 2</p>
+                              <p>
+                                {post?.recommand} / {post?.unrecommand}
+                              </p>
                             </div>
                           </td>
                         </tr>

@@ -1,12 +1,10 @@
 import axios, { AxiosError } from "axios";
 import React, { useState, SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies();
   const [form, setForm] = useState({
     email: "",
     password: "",
