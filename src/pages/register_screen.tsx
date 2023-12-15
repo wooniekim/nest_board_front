@@ -126,7 +126,6 @@ const Register = () => {
                   <input
                     placeholder="비밀번호"
                     type={passwordType.type}
-                    id="password"
                     className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
                     onChange={(event) =>
                       setForm({ ...form, password: event.target.value })
@@ -165,7 +164,6 @@ const Register = () => {
                 <input
                   placeholder="비밀번호"
                   type={confirmPasswordType.type}
-                  id="password"
                   className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
                   onChange={(event) =>
                     setForm({ ...form, passwordCheck: event.target.value })

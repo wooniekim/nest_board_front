@@ -129,7 +129,9 @@ const Main = () => {
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <div className="flex items-center justify-center">
-                              <p className="text-gray-900">{post?.createdAt}</p>
+                              <p className="text-gray-900">
+                                {post?.createdAt.substr(0, 10)}
+                              </p>
                             </div>
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">

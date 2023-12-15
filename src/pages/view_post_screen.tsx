@@ -187,6 +187,43 @@ const ViewPost = () => {
     }
   };
 
+  const PostGaechu = async (isRecommand: boolean) => {
+    const recommandUrl = `http://localhost:3000/post/${postId}/recommand`;
+    const body = {
+      postId: postId,
+      recommand: isRecommand,
+    };
+    const token = localStorage.getItem("access-token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const res = await axios.post(recommandUrl, body, { headers });
+      console.log(res);
+      if (res.status === 201) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "댓글 작성이 완료되었습니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        window.location.replace(`/viewpost/${postId}`);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: error.response?.data.message,
+          text: "관리자에게 문의해주세요.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+      navigate(`/viewpost/${postId}`);
+    }
+  };
+
   return (
     <>
       <div className="min-w-screen min-h-screen">
@@ -265,13 +302,16 @@ const ViewPost = () => {
                   </div>
                   <div className="mt-10">
                     <img
-                      src="https://i.ibb.co/XxTY0vK/photo-2023-11-13-19-12-47.jpg"
+                      src="https://i.ibb.co/WsxYcRR/Kakao-Talk-Photo-2023-11-06-20-20-06-removebg-preview.png"
                       alt=""
                     />
                   </div>
                   <div className="flex flex-wrap mt-10">
                     <div className="mx-4">
-                      <button className="text-grey-darkest font-bold py-2 px-4 rounded items-center border shadow-lg grid place-items-center hover:shadow-blue-400">
+                      <button
+                        onClick={() => PostGaechu(true)}
+                        className="text-grey-darkest font-bold py-2 px-4 rounded items-center border shadow-lg grid place-items-center hover:shadow-blue-400"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           height="1em"
@@ -284,7 +324,10 @@ const ViewPost = () => {
                       </button>
                     </div>
                     <div className="mx-4">
-                      <button className="text-grey-darkest font-bold py-2 px-4 rounded items-center border shadow-lg grid place-items-center hover:shadow-red-400">
+                      <button
+                        onClick={() => PostGaechu(false)}
+                        className="text-grey-darkest font-bold py-2 px-4 rounded items-center border shadow-lg grid place-items-center hover:shadow-red-400"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           height="1em"

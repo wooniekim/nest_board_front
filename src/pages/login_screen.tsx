@@ -97,7 +97,6 @@ const Login = () => {
                   <input
                     placeholder="비밀번호"
                     type="password"
-                    id="password"
                     className="bg-transparent text-sm text-gray-900 focus:outline-none rounded-lg"
                     onChange={(event) =>
                       setForm({ ...form, password: event.target.value })
